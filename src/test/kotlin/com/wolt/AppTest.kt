@@ -32,4 +32,14 @@ class AppTest {
 
         assertEquals("Got 0 BadRequestExceptions", response.bodyAsText())
     }
+
+    @Test
+    fun `a test using withTestApplication`() = withTestApplication({ ktorMain() }) {
+        val response = handleRequest(HttpMethod.Post, "/") {
+            addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            setBody("""{"field": "test"}""")
+        }.response
+
+        assertEquals("Got 0 BadRequestExceptions", response.content)
+    }
 }
